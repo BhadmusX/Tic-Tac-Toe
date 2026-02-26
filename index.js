@@ -2,8 +2,10 @@ const startBtn = document.querySelector(".start-btn");
 const restartBtn = document.querySelector(".restart-btn")
 const displayCnt = document.querySelector(".display");
 const display = document.createElement("p");
+const warning = document.createElement("p");
 displayCnt.appendChild(display);
 display.classList.add("p");
+displayCnt.appendChild(warning);
 
 
 let playerOne;
@@ -90,7 +92,8 @@ const gameController = (function() {
     const playRound = (index) => {
 
         if (gameOver){
-            console.log("The game is over. Reset to play again. ");
+            warning.textContent = "";
+            warning.textContent = "The game is over. Hit the restart to play again. ";
            return;
         }
         console.log(`marking cell ${index} for ${gameController.getActivePlayer().name}`)
@@ -112,7 +115,7 @@ const gameController = (function() {
             const isTie = currentBoard.every(cell => cell !== "") && !isWin;
             if(isWin){
                 display.textContent = "";
-                display.textContent = `${activePlayer.name} won this round`
+                display.textContent = `${activePlayer.name} won this round`;
                 gameOver = true;
                 return;
             } else if(isTie){
@@ -138,8 +141,12 @@ const gameController = (function() {
 })();
 
 restartBtn.addEventListener("click", () => {
+
     display.textContent = "";
+    warning.textContent = "";
+
     gameController.getResetGame();
+
     renderboard();
 });
 
