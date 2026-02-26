@@ -1,4 +1,8 @@
-const p = document.querySelector("p");
+const startBtn = document.querySelector(".start-btn");
+
+
+let playerOne;
+let playerTwo;
 
 const gameboard = ( () => {
 
@@ -29,19 +33,29 @@ const Player = (name, marker) => {
     return { name, marker };
 };
 
-const getplayerData = (playerNumber)=> {
-   let name =  prompt(`Enter name for player ${playerNumber}`);
-   if(!name) {
-    name = `player${playerNumber}`;
-   }
-   return {name};
-};
+startBtn.addEventListener("click", () => {
+    let p1Name = document.querySelector(".name1");
+    let p2Name = document.querySelector(".name2");
 
-   let dataP1 = getplayerData(1);
-    let playerOne = Player(dataP1.name, "X");
+    if(!p1Name.value) p1Name.value = "Player 1";
+    if(!p2Name.value) p2Name.value = "Player 2";
 
-   let dataP2 = getplayerData(2);
-   let playerTwo = Player(dataP2.name, "O");
+    p1Name.value = "";
+    p2Name.value = "";
+
+   
+    playerOne = Player(p1Name.value, "X");
+    playerTwo = Player(p2Name.value, "O");
+
+    
+    gameController.setPlayers(playerOne, playerTwo);
+
+
+    renderboard();
+
+   
+});
+
 
 
 const gameController = (function() {
@@ -53,7 +67,14 @@ const gameController = (function() {
         [0, 4, 8], [2, 4, 6]             
     ];
 
-    let activePlayer = playerOne;
+    
+    let activePlayer;
+
+    const setPlayers = (p1, p2) => {
+        playerOne = p1;
+        playerTwo = p2;
+        activePlayer = playerOne;
+    };
 
     const switchPlayer = () => {
         activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
@@ -105,7 +126,7 @@ const gameController = (function() {
         activePlayer = playerOne;
     };
 
-    return { playRound, getActivePlayer: () => activePlayer, getGameOver: () => gameOver, getResetGame: () => resetGame() };
+    return { playRound, getActivePlayer: () => activePlayer, getGameOver: () => gameOver, getResetGame: () => resetGame, setPlayers };
 })();
 
 const renderboard = () => {
