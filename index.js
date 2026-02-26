@@ -1,4 +1,9 @@
 const startBtn = document.querySelector(".start-btn");
+const restartBtn = document.querySelector(".restart-btn")
+const displayCnt = document.querySelector(".display");
+const display = document.createElement("p");
+displayCnt.appendChild(display);
+display.classList.add("p");
 
 
 let playerOne;
@@ -40,12 +45,12 @@ startBtn.addEventListener("click", () => {
     if(!p1Name.value) p1Name.value = "Player 1";
     if(!p2Name.value) p2Name.value = "Player 2";
 
-    p1Name.value = "";
-    p2Name.value = "";
-
    
     playerOne = Player(p1Name.value, "X");
     playerTwo = Player(p2Name.value, "O");
+
+     p1Name.value = "";
+    p2Name.value = "";
 
     
     gameController.setPlayers(playerOne, playerTwo);
@@ -78,6 +83,7 @@ const gameController = (function() {
 
     const switchPlayer = () => {
         activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
+        display.textContent = `${gameController.getActivePlayer().name}'s turn..`;
     };
     
     
@@ -87,7 +93,7 @@ const gameController = (function() {
             console.log("The game is over. Reset to play again. ");
            return;
         }
-        console.log(`Marking cell ${index} for ${activePlayer.name}..`);
+        console.log(`marking cell ${index} for ${gameController.getActivePlayer().name}`)
 
         const success = gameboard.placeMark(index, activePlayer.marker);
         renderboard();
@@ -105,11 +111,13 @@ const gameController = (function() {
             });
             const isTie = currentBoard.every(cell => cell !== "") && !isWin;
             if(isWin){
-                console.log(`${activePlayer.name} won this round`)
+                display.textContent = "";
+                display.textContent = `${activePlayer.name} won this round`
                 gameOver = true;
                 return;
             } else if(isTie){
-                console.log("Its a tie try again");
+                display.textContent = "";
+                display.textContent = "Its a tie try again";
                 gameOver = true;
                 return;
             }
@@ -126,8 +134,14 @@ const gameController = (function() {
         activePlayer = playerOne;
     };
 
-    return { playRound, getActivePlayer: () => activePlayer, getGameOver: () => gameOver, getResetGame: () => resetGame, setPlayers };
+    return { playRound, getActivePlayer: () => activePlayer, getGameOver: () => gameOver, getResetGame: () => resetGame(), setPlayers };
 })();
+
+restartBtn.addEventListener("click", () => {
+    display.textContent = "";
+    gameController.getResetGame();
+    renderboard();
+});
 
 const renderboard = () => {
     const board = gameboard.getBoard();
