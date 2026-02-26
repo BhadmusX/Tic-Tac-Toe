@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+.container{
+display: grid;
+grid-template-columns: repeat(3, minmax(105px, 1fr));
+grid-template-rows: repeat(3, minmax(105px, 1fr));
+gap: 2px;
+ width: clamp(320px, 45vw, 330px);
+  height: clamp(320px, 45vw, 330px);
+  text-align: center;
+}
+.square{
+    height: 100px;
+    width: 100px;
+    border-radius: 6px;
+    background-color: white;
+    border: 3px solid black;
+    
+}
