@@ -120,7 +120,7 @@ const gameController = (function() {
                 return;
             } else if(isTie){
                 display.textContent = "";
-                display.textContent = "Its a tie try again";
+                display.textContent = "Its a tie. hit the restart button";
                 gameOver = true;
                 return;
             }
